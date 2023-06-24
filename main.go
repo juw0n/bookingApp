@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func main() {
 	confName := "Go Conference"
@@ -16,22 +19,39 @@ func main() {
 	var email string
 	var userTickets int
 
-	var booking [50]string
+	var bookings []string
 
-	// Getting users details
-	fmt.Printf("Enter your first name: ")
-	fmt.Scan(&firstName)
-	fmt.Printf("Enter your last name: ")
-	fmt.Scan(&lastName)
-	fmt.Printf("Enter your email address: ")
-	fmt.Scan(&email)
-	fmt.Printf("How many ticket are you ordering: ")
-	fmt.Scan(&userTickets)
+	for {
+		// Getting users details
+		fmt.Printf("Enter your first name: ")
+		fmt.Scan(&firstName)
+		fmt.Printf("Enter your last name: ")
+		fmt.Scan(&lastName)
+		fmt.Printf("Enter your email address: ")
+		fmt.Scan(&email)
+		fmt.Printf("How many ticket are you ordering: ")
+		fmt.Scan(&userTickets)
 
-	// some Logics
-	remainingTickets = remainingTickets - userTickets
-	booking[0] = firstName + " " + lastName
+		// some Logics
+		if userTickets <= remainingTickets {
+			remainingTickets = remainingTickets - userTickets
+			bookings = append(bookings, firstName+" "+lastName)
 
-	fmt.Printf("Thank you %v %v for ordering %v tickets. You will get a confirmation email at %v\n", firstName, lastName, userTickets, email)
-	fmt.Printf("The remaining available ticket for this confrerence is %v.\n", remainingTickets)
+			fmt.Printf("Thank you %v %v for ordering %v tickets. You will get a confirmation email at %v\n", firstName, lastName, userTickets, email)
+			fmt.Printf("We have only %v tickets left.\n", remainingTickets)
+
+			firstNames := []string{}
+			for _, booking := range bookings {
+				names := strings.Fields(booking)
+				firstNames = append(firstNames, names[0])
+			}
+
+			fmt.Printf("These are all the bookings: %v\n", firstNames)
+		} else {
+			fmt.Printf("We only have %v tickets left, you can't book %v tickets\n", remainingTickets, userTickets)
+			continue
+		}
+
+	}
+
 }
